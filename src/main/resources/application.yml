@@ -1,0 +1,150 @@
+spring:
+  application:
+    name: reader
+  security:
+    user:
+      name: userAdmin
+      password: passwordAdmin
+  boot:
+    admin:
+      client:
+        url: http://localhost:5004
+        # ?? server
+        username: userAdmin
+        password: passwordAdmin
+        instance:
+          metadata:
+            # ?? server
+            user:
+              name: userAdmin
+              password: passwordAdmin
+
+  data:
+    web:
+      pageable:
+        default-page-size: 50
+        max-page-size: 50
+        one-indexed-parameters: true
+
+  datasource:
+    url: jdbc:postgresql://localhost:5432/example
+    username: admindb
+    password: passwordAdminDB
+  jpa:
+    show-sql: true
+    hibernate:
+      ddl-auto: validate
+      properties:
+        hibernate:
+          format_sql: true
+      enable_lazy_load_no_trans: true
+      event:
+        merge:
+          entity_copy_observer: allow
+    open-in-view: false # EXPLAIN_V ??????? ?? ???????? ?????????? ???? ?????? HTTP ??????
+  liquibase:
+    enabled: true
+    change-log: classpath:db/changelog/db-changelog.yml
+  docker:
+    compose:
+      enabled: false
+      skip:
+        in-test: false
+
+server:
+  port: 5002
+  max-http-header-size: 100000
+
+# ????????? Actuator
+management:
+  info:
+    env:
+      enabled: true
+  endpoints:
+    web:
+      exposure:
+        include: "*" # EXPLAIN_V ??????? ? ????????? ?????? ???????? ??? ??????
+  metrics:
+    export:
+      prometheus:
+        enabled: true
+    distribution:
+      percentiles-histogram:
+        "[http.server.requests]": true
+
+
+logging:
+  path: ${user.home}/logs/main
+  level:
+    org:
+      hibernate:
+        orm:
+          jdbc:
+            bind: TRACE
+
+openapi:
+  dev-url: http://localhost:5002
+
+springdoc:
+  show-login-endpoint: true
+  api-docs:
+    enabled: true
+    path: /apiDocs
+  swagger-ui:
+    enabled: true
+    path: /swagger
+    filter: true
+    tryItOutEnabled: true
+    tagsSorter: alpha
+    docExpansion: none
+    defaultModelsExpandDepth: 10
+
+jwt:
+  key: secret
+  access-token-expiration: 300000
+  refresh-token-expiration: 36000000
+
+grpc:
+  client:
+    GLOBAL:
+      negotiationType: PLAINTEXT
+    reader-server:
+      address: static://${SERVER_IP:localhost}:${SERVER_PORT:5002}
+
+grpc-server:
+  url: ${SERVER_IP:localhost}
+  port: ${SERVER_PORT:5002}
+
+---
+
+spring:
+  config:
+    activate:
+      on-profile: "prod"
+  datasource:
+    url: jdbc:postgresql://localhost:5432/example
+    username: admindb
+    password: passwordAdminDB
+  jpa:
+    show-sql: false
+  liquibase:
+    enabled: true
+
+logging:
+  level:
+    root: WARN
+    org:
+      hibernate:
+        orm:
+          jdbc:
+            bind: INFO
+
+springdoc:
+  show-login-endpoint: false
+  api-docs:
+    enabled: false
+  swagger-ui:
+    enabled: false
+
+jwt:
+  key: ltymCehrf
