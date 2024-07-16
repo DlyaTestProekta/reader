@@ -1,23 +1,25 @@
 spring:
   application:
     name: reader
+  config:
+    import: optional:file:.env[.properties]
   security:
     user:
-      name: userAdmin
-      password: passwordAdmin
+      name: ${SPRING_USER}
+      password: ${SPRING_PASSWORD}
   boot:
     admin:
       client:
-        url: http://localhost:5004
-        # ?? server
-        username: userAdmin
-        password: passwordAdmin
+        url: http://${SPRING_ADMIN_HOST}:5004
+        # от server
+        username: ${SPRING_ADMIN_USER}
+        password: ${SPRING_ADMIN_PASSWORD}
         instance:
           metadata:
-            # ?? server
+            # от server
             user:
-              name: userAdmin
-              password: passwordAdmin
+              name: ${SPRING_ADMIN_USER}
+              password: ${SPRING_ADMIN_PASSWORD}
 
   data:
     web:
@@ -27,9 +29,9 @@ spring:
         one-indexed-parameters: true
 
   datasource:
-    url: jdbc:postgresql://localhost:5432/example
-    username: admindb
-    password: passwordAdminDB
+    url: jdbc:postgresql://${POSTGRES_HOST}:5432/${POSTGRES_DB}
+    username: ${POSTGRES_USER}
+    password: ${POSTGRES_PASSWORD}
   jpa:
     show-sql: true
     hibernate:
@@ -41,7 +43,7 @@ spring:
       event:
         merge:
           entity_copy_observer: allow
-    open-in-view: false # EXPLAIN_V ??????? ?? ???????? ?????????? ???? ?????? HTTP ??????
+    open-in-view: false # EXPLAIN_V Держать ли открытой транзакцию пока открыт HTTP запрос
   liquibase:
     enabled: false
     change-log: classpath:db/changelog/db-changelog.yml
@@ -55,7 +57,7 @@ server:
   port: 5002
   max-http-header-size: 100000
 
-# ????????? Actuator
+# Настройка Actuator
 management:
   info:
     env:
@@ -63,7 +65,7 @@ management:
   endpoints:
     web:
       exposure:
-        include: "*" # EXPLAIN_V ??????? ? ????????? ?????? ???????? ??? ??????
+        include: "*" # EXPLAIN_V Открыть у актуатора больше запросов для метрик
   metrics:
     export:
       prometheus:
@@ -71,7 +73,6 @@ management:
     distribution:
       percentiles-histogram:
         "[http.server.requests]": true
-
 
 logging:
   path: ${user.home}/logs/main
@@ -99,35 +100,25 @@ springdoc:
     docExpansion: none
     defaultModelsExpandDepth: 10
 
-jwt:
-  key: secret
-  access-token-expiration: 300000
-  refresh-token-expiration: 36000000
-
 grpc:
   client:
     GLOBAL:
       negotiationType: PLAINTEXT
     reader-server:
-      address: static://localhost:5005
+      address: static://${GRPC_HOST}:5005
   server:
-    url: localhost
+    url: ${GRPC_HOST}
     port: 5005
 
 ---
 
 spring:
   config:
+    import: optional:file:.env[.properties]
     activate:
       on-profile: "prod"
-  datasource:
-    url: jdbc:postgresql://localhost:5432/example
-    username: admindb
-    password: passwordAdminDB
   jpa:
     show-sql: false
-  liquibase:
-    enabled: true
 
 logging:
   level:
@@ -144,6 +135,3 @@ springdoc:
     enabled: false
   swagger-ui:
     enabled: false
-
-jwt:
-  key: ltymCehrf
