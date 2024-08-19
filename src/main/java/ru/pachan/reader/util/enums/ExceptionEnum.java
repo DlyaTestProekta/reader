@@ -9,4 +9,4 @@ public enum ExceptionEnum {
     OBJECT_NOT_FOUND("Объект не найден");
 
     private final String message;
-    }
+}
