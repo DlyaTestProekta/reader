@@ -1,11 +1,7 @@
 val springBootStarterVer: String by project // 3.3.1-SNAPSHOT
 val springAdminVer: String by project // 3.2.3
 val postgreSQLVer: String by project // 42.7.3
-val liquibaseVer: String by project // 4.26.0
-//val jacksonVer: String by project // 2.17.0
 val openApiVer: String by project // 2.4.0
-val javaJwtVer: String by project // 4.4.0
-//val jsonVer: String by project // 20240303
 val micrometerPrometheusVer: String by project // 1.12.4
 val lombokVer: String by project // 1.18.32
 val junitVer: String by project // 1.11.0-M2
@@ -39,11 +35,8 @@ dependencies {
 	implementation("de.codecentric:spring-boot-admin-starter-client:$springAdminVer")
 	implementation("org.springdoc:springdoc-openapi-starter-webmvc-ui:$openApiVer")
 	implementation("io.micrometer:micrometer-registry-prometheus:$micrometerPrometheusVer")
-	//implementation("com.auth0:java-jwt:$javaJwtVer")
 	implementation("ru.pachan:proto-common:$protoCommonVer")
-
 	implementation("net.devh:grpc-server-spring-boot-starter:$grpcVer")
-
 	runtimeOnly("org.postgresql:postgresql:$postgreSQLVer")
 	testImplementation("org.springframework.boot:spring-boot-starter-test:$springBootStarterVer")
 	testRuntimeOnly("org.junit.platform:junit-platform-launcher:$junitVer")
