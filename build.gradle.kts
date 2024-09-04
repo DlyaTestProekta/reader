@@ -1,7 +1,6 @@
 val springBootStarterVer: String by project // 3.3.1-SNAPSHOT
 val springAdminVer: String by project // 3.2.3
 val postgreSQLVer: String by project // 42.7.3
-val openApiVer: String by project // 2.4.0
 val micrometerPrometheusVer: String by project // 1.12.4
 val lombokVer: String by project // 1.18.32
 val junitVer: String by project // 1.11.0-M2
@@ -15,7 +14,6 @@ plugins {
 }
 
 group = "ru.pachan"
-version = "0.0.1-SNAPSHOT"
 
 java {
 	sourceCompatibility = JavaVersion.VERSION_21
@@ -29,11 +27,9 @@ repositories {
 
 dependencies {
 	implementation("org.springframework.boot:spring-boot-starter-data-jpa:$springBootStarterVer")
-	implementation("org.springframework.boot:spring-boot-starter-security:$springBootStarterVer")
 	implementation("org.springframework.boot:spring-boot-starter-web:$springBootStarterVer")
 	implementation("org.springframework.boot:spring-boot-starter-actuator:$springBootStarterVer")
 	implementation("de.codecentric:spring-boot-admin-starter-client:$springAdminVer")
-	implementation("org.springdoc:springdoc-openapi-starter-webmvc-ui:$openApiVer")
 	implementation("io.micrometer:micrometer-registry-prometheus:$micrometerPrometheusVer")
 	implementation("ru.pachan:proto-common:$protoCommonVer")
 	implementation("net.devh:grpc-server-spring-boot-starter:$grpcVer")
