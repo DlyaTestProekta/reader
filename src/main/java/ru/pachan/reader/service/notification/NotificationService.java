@@ -75,7 +75,7 @@ class NotificationService extends NotificationServiceImplBase {
                     .build();
             responseObserver.onNext(response);
         } catch (RequestException e) {
-            ErrorInfo errorInfo = ErrorInfo.newBuilder()
+            var errorInfo = ErrorInfo.newBuilder()
                     .setReason(e.getMessage())
                     .putMetadata("message", e.getMessage())
                     .putMetadata("httpStatus", String.valueOf(e.getHttpStatus().value()))
